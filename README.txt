@@ -1,7 +1,7 @@
 TraceForge — An Observable Autonomous Coding Agent
 
 Git 仓库地址：
-<请替换为最终 Git 仓库地址>
+https://github.com/gaod-at-suda/TraceForge
 
 一、项目简介
 TraceForge 是一个从零实现的轻量级 Coding Agent。用户可在 Web 页面中选择本地工作区并输入自然语言任务，Agent 会自主分析代码、调用工具、修改文件、运行测试，并展示执行时间线、代码 Diff 与验证结果。项目未使用 LangChain、AutoGen、OpenAI Agents SDK 等 Agent 框架，Agent Loop、上下文管理、工具调度、终止策略、错误恢复与回滚均自行实现。
