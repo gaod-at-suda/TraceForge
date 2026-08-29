@@ -1,0 +1,39 @@
+# Secrets / local model configuration
+.env
+.env.*
+!.env.example
+
+# Python caches / build artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# IDE / editor
+.idea/
+.vscode/
+*.iml
+
+# TraceForge runtime output
+.traceforge_runtime/
+
+# Generated / temporary demo workspaces
+demo_project/
+web_demo_*/
+
+# Temporary logs / inspection artifacts
+*.log
+diff.txt
+
+# OS files
+.DS_Store
+Thumbs.db
