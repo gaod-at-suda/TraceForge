@@ -14,7 +14,7 @@ def repo_map(
     max_files: int = 80,
     max_symbols_per_file: int = 12,
 ) -> str:
-    """展示文件和关键符号，减少 LLM 逐文件盲读。"""
+    """展示文件与关键符号，减少 LLM 对代码库进行无目的逐文件读取。"""
     root = workspace.resolve(path)
     if not root.exists() or not root.is_dir():
         raise NotADirectoryError(f"目录不存在：{path}")

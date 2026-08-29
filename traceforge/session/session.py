@@ -22,8 +22,8 @@ class Session:
         loaded = store.load() if store else []
         self.messages = loaded or [{"role": "system", "content": SYSTEM_PROMPT}]
 
-        # 老版本或损坏历史没有 system message 时自动补齐；
-        # 提示词升级后同步刷新首条 system message，避免旧会话继续使用过期策略。
+        # 若持久化历史缺少 system message，则自动补齐；
+        # 当系统提示词发生更新时同步刷新首条消息，确保恢复后的会话使用当前策略。
         if self.messages[0].get("role") != "system":
             self.messages.insert(0, {"role": "system", "content": SYSTEM_PROMPT})
             self._rewrite()

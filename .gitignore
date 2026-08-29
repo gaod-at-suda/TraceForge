@@ -37,3 +37,6 @@ diff.txt
 # OS files
 .DS_Store
 Thumbs.db
+
+# Submission artifact (kept outside the source repository)
+README.txt

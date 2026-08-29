@@ -17,7 +17,7 @@ _DEMO_GITIGNORE_ENTRIES = (
 
 
 def _ensure_demo_gitignore(workspace: Path) -> None:
-    """确保 Demo 的 Python 测试缓存不会把 Git 工作区弄脏。
+    """确保 Demo 产生的 Python 测试缓存不会改变 Git 工作区的干净状态。
 
     baseline pytest 会生成 ``__pycache__`` / ``.pytest_cache``。如果这些
     文件没有被忽略，Agent 启动时会误判为“任务开始前已有未提交修改”，

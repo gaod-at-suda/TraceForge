@@ -1,4 +1,4 @@
-"""TraceForge V1 运行时组装。"""
+"""TraceForge 运行时组装。"""
 
 from __future__ import annotations
 
@@ -54,7 +54,7 @@ def build_runtime(
         )
     )
 
-    # 延迟导入模型客户端，保证纯本地测试不依赖线上 API。
+    # 延迟导入模型客户端，使纯本地单元测试无需初始化线上 API 客户端。
     from traceforge.llm.client import LLMClient
 
     registry = ToolRegistry(workspace, settings)

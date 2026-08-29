@@ -1,7 +1,7 @@
 """LLM 与 Agent 之间的统一数据结构。
 
 Agent 核心逻辑不直接依赖某个模型厂商的原始 Response 对象，
-便于未来替换不同的 OpenAI 兼容模型。
+使上层 Agent Loop 与具体 OpenAI-compatible 模型响应格式解耦。
 """
 
 from __future__ import annotations

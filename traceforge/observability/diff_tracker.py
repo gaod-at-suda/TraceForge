@@ -3,8 +3,6 @@
 from __future__ import annotations
 
 import difflib
-from pathlib import Path
-
 from traceforge.workspace.workspace import Workspace
 
 

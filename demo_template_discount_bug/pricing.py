@@ -18,5 +18,5 @@ def calculate_price(price: float, discount: float) -> float:
     if not 0 <= discount <= 1:
         raise ValueError("discount 必须位于 0 到 1 之间")
 
-    # BUG: 这里错误地返回了“折扣掉的金额”，而不是“折后价格”。
+    # 演示场景故意保留的缺陷：此处返回了折扣金额，而非折后价格，供 Agent 根据失败测试定位并修复。
     return round(price * discount, 2)

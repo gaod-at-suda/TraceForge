@@ -6,7 +6,6 @@
 from __future__ import annotations
 
 import os
-import sys
 import webbrowser
 from pathlib import Path
 
@@ -87,11 +86,11 @@ def _check_api_key() -> bool:
     _print_title("缺少模型 API Key")
     print(
         "本地单元测试可以直接运行，但真实 Agent 任务需要 TRACEFORGE_API_KEY。\n"
-        "请在 PyCharm -> Run/Debug Configurations -> Environment variables 中配置：\n"
+        "请复制项目根目录 .env.example 为 .env，或通过系统环境变量配置：\n"
         "TRACEFORGE_API_KEY=你的Key\n"
         "TRACEFORGE_MODEL=你的模型名\n"
         "如使用 OpenAI-compatible 服务，再配置 TRACEFORGE_BASE_URL。\n"
-        "配置一次后，以后直接点击 Run main.py 即可，不需要输入任何命令。"
+        "配置完成后重新运行 python main.py。"
     )
     return False
 
@@ -163,8 +162,7 @@ def _exercise_rollback(
     restored = snapshot_text_files(DEMO_WORKSPACE)
     snapshot_ok = restored == before
 
-    # create() 只有在 Git 仓库仍然干净时才会 enabled=True，
-    # 因此这里同时充当 git status clean 的独立检查。
+    # create() 仅在 Git 工作区干净时启用，因此该结果同时用于确认基线状态可安全回滚。
     clean_probe = runtime.checkpoint_manager.create()
     git_clean = clean_probe.enabled
 
@@ -284,8 +282,8 @@ def run_direct_test() -> int:
     rollback_ok = True
     rollback_details = ""
     if scenario.exercise_rollback:
-        # 只有 Agent 的正常工作和独立验收先成功，才注入“最终验收失败”。
-        # 这样 Rollback 测试的失败原因完全可控，不依赖模型随机犯错。
+        # 仅在 Agent 执行和独立验证均成功后注入受控失败，
+        # 以确定性验证 Rollback，而不依赖模型产生随机错误。
         if result.success and verification.success and bool(diffs):
             rollback_ok, rollback_details = _exercise_rollback(
                 runtime,

@@ -32,7 +32,7 @@ def _retry_remove_readonly(func, path: str, exc_info) -> None:
         current_mode = os.stat(path).st_mode
         os.chmod(path, current_mode | stat.S_IWUSR)
     except OSError:
-        # 让下面的重试给出真正的删除错误。
+        # 未处理的异常继续交给后续重试逻辑，以保留真实删除错误。
         pass
 
     func(path)
@@ -43,7 +43,7 @@ def _remove_tree(path: Path) -> None:
     if sys.version_info >= (3, 12):
         shutil.rmtree(path, onexc=_retry_remove_readonly)
     else:
-        # Python < 3.12 尚无 onexc；onerror 的第三个参数是 exc_info 元组。
+        # 兼容 Python 3.12 之前的 shutil.rmtree 接口：onerror 的第三个参数为 exc_info 元组。
         shutil.rmtree(path, onerror=_retry_remove_readonly)
 
 

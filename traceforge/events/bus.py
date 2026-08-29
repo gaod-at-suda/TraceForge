@@ -47,7 +47,7 @@ class EventBus:
             )
             listeners = list(self._listeners)
 
-        # 监听器异常不能反向打断 Agent 主流程。
+        # 事件监听器属于可观测性旁路；单个监听器异常不得影响 Agent 主执行流程。
         for listener in listeners:
             try:
                 listener(event)

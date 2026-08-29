@@ -17,7 +17,7 @@ def _build_command_env() -> dict[str, str]:
     """让子进程优先使用启动 TraceForge 的 Python 环境。
 
     TraceForge 可能通过 ``venv/Scripts/python.exe`` 启动，但 Windows 的
-    ``shell=True`` 子命令仍会按照系统 PATH 解析裸 ``python`` / ``pytest``。
+    ``shell=True`` 子命令仍会按照系统 PATH 解析未带绝对路径的 ``python`` / ``pytest``。
     因此把当前解释器目录放到 PATH 最前面，保证 Agent 执行命令时优先
     使用与 TraceForge 自身一致的虚拟环境。
     """
@@ -31,7 +31,7 @@ def _build_command_env() -> dict[str, str]:
         else interpreter_dir + os.pathsep + current_path
     )
 
-    # 如果当前进程运行在 venv 中，也把 VIRTUAL_ENV 传给子进程。
+    # 若 TraceForge 运行在虚拟环境中，将 VIRTUAL_ENV 同步传递给子进程。
     if sys.prefix != sys.base_prefix:
         env["VIRTUAL_ENV"] = sys.prefix
 

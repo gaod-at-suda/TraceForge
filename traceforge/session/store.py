@@ -28,7 +28,7 @@ class SessionStore:
             try:
                 item = json.loads(line)
             except json.JSONDecodeError:
-                # 单行损坏时忽略该行，尽量保留其它可恢复历史。
+                # 单条记录损坏时跳过该记录，保留其余可解析的会话历史。
                 continue
             if isinstance(item, dict) and "role" in item:
                 messages.append(item)

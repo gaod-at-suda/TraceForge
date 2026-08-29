@@ -1,9 +1,8 @@
-"""TraceForge V1 核心 Agent Loop。
+"""TraceForge 核心 Agent Loop。
 
-保持单层可解释闭环：
-LLM 决策 -> Tool -> Observation -> LLM。
-V3 在闭环外围增加 Git Checkpoint 和宿主侧 Automatic Verification，
-但不把这些机制交给模型自行决定。
+保持单层、可解释的执行闭环：LLM 决策 -> Tool -> Observation -> LLM。
+Git Checkpoint 与宿主侧 Automatic Verification 位于闭环外围，
+由本地 runtime 强制执行，而不是交给模型自行决定。
 """
 
 from __future__ import annotations
@@ -151,8 +150,8 @@ class AgentLoop:
 
             self._execute_tool_calls(run_id, step, session, response.tool_calls)
 
-        # 正常工具预算耗尽时，不立即把“其实已经完成、只差总结”的任务判失败。
-        # 先由宿主验证当前真实工作区；验证通过后仅额外允许一次“无工具收尾”。
+        # 达到常规工具步数上限后，先由宿主程序验证当前工作区状态。
+        # 若验证已经通过，则仅允许一次不再调用工具的最终总结，避免把已完成任务误判为失败。
         return self._finalize_after_step_limit(
             run_id=run_id,
             session=session,

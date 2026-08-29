@@ -96,18 +96,18 @@ SCENARIOS = {
     ),
 }
 
-# 当前阶段默认执行 Checkpoint / Rollback 端到端场景。
-# 完成后可切回 "order_total_bug" 作为最终多文件 Debug 演示候选。
-ACTIVE_SCENARIO = "rollback_recovery"
+# 默认使用跨模块 Bug 修复场景，完整展示失败测试、代码分析、最小修改与宿主验证流程。
+# Rollback 场景仍保留在 SCENARIOS 中，可单独用于验证失败恢复链路。
+ACTIVE_SCENARIO = "order_total_bug"
 
-# 是否在 Agent 集成测试前先运行 TraceForge 自身的 tests/。
+# 是否在 Agent 集成测试前运行 TraceForge 自身的单元测试。
 RUN_FRAMEWORK_TESTS = True
 
-# 是否在 Agent 运行前检查 demo_project 的原始测试状态。
+# 是否在 Agent 执行前验证 Demo 工作区的初始测试状态。
 RUN_BASELINE_TESTS = True
 
-# Agent 结束后始终会再次运行 demo_project 的 pytest 作为独立验收。
+# Agent 结束后是否由宿主程序再次运行 Demo 测试，作为独立于模型结论的最终验收。
 VERIFY_AFTER_AGENT = True
 
-# 完成后是否自动用系统默认浏览器打开静态 HTML 报告。
+# 是否在场景结束后使用系统默认浏览器打开生成的静态 HTML 报告。
 AUTO_OPEN_HTML_REPORT = True

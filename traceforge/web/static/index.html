@@ -4,115 +4,160 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark">
-  <title>TraceForge · 可观测自主编程 Agent</title>
+  <meta name="theme-color" content="#0d1b2d">
+  <title>TraceForge · Autonomous Coding Agent</title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <div class="ambient ambient-a"></div>
-  <div class="ambient ambient-b"></div>
+  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="glow glow-a" aria-hidden="true"></div>
+  <div class="glow glow-b" aria-hidden="true"></div>
 
   <header class="topbar">
-    <div class="brand-block">
-      <div class="brand-row">
-        <span class="brand-mark">TF</span>
-        <div>
-          <h1>TraceForge</h1>
-          <p class="tagline">Observe every step. Forge correct code.</p>
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"><span>TF</span></div>
+        <div class="brand-copy">
+          <div class="brand-title-row">
+            <h1>TraceForge</h1>
+            <span class="product-tag">LOCAL AGENT</span>
+          </div>
+          <p>Observe every step. Forge correct code.</p>
         </div>
       </div>
-      <p id="workspace" class="workspace">当前工作区：加载中...</p>
-    </div>
-    <div class="runtime-meta">
-      <span id="model-chip" class="chip">模型：-</span>
-      <span id="mode-chip" class="chip">模式：-</span>
-      <span class="status-wrap">
-        <span id="status-dot" class="dot idle"></span>
-        <span id="status-text">空闲</span>
-      </span>
+
+      <div class="runtime-meta" aria-label="运行时状态">
+        <span id="model-chip" class="chip"><span class="chip-key">MODEL</span><span>-</span></span>
+        <span id="mode-chip" class="chip"><span class="chip-key">MODE</span><span>-</span></span>
+        <span class="status-wrap">
+          <span id="status-dot" class="dot idle"></span>
+          <span id="status-text">空闲</span>
+        </span>
+      </div>
     </div>
   </header>
 
-  <main class="page">
-    <section class="hero-card card">
-      <div class="hero-copy">
-        <span class="eyebrow">自主编程智能体 · AUTONOMOUS CODING AGENT</span>
-        <h2>用自然语言描述任务，剩下的交给 Agent。</h2>
-        <p>TraceForge 会自主理解代码库、调用工具、修改文件、运行测试，并把关键过程实时展示出来。</p>
-        <div class="feature-row">
-          <span>代码理解</span><span>工具调用</span><span>自动验证</span><span>失败回滚</span>
+  <main class="page-shell">
+    <section class="hero">
+      <div class="hero-intro">
+        <div class="kicker"><span class="kicker-dot"></span> OBSERVABLE AUTONOMOUS CODING AGENT</div>
+        <h2>让 Agent 真正进入代码库，<br><span>自主完成编程任务。</span></h2>
+        <p class="hero-description">从代码理解、工具调用、文件修改到自动测试与失败回滚，TraceForge 将每一步执行过程实时呈现。</p>
+        <div class="capability-grid" aria-label="核心能力">
+          <div class="capability"><span class="cap-icon">⌕</span><div><strong>代码理解</strong><small>Repo Map · Search</small></div></div>
+          <div class="capability"><span class="cap-icon">⌘</span><div><strong>本地工具</strong><small>Read · Edit · Run</small></div></div>
+          <div class="capability"><span class="cap-icon">✓</span><div><strong>自动验证</strong><small>Host Verification</small></div></div>
+          <div class="capability"><span class="cap-icon">↩</span><div><strong>安全恢复</strong><small>Git Checkpoint</small></div></div>
         </div>
       </div>
 
-      <div class="task-box">
-        <div class="workspace-control">
-          <div class="field-title-row">
-            <label for="workspace-input">工作区</label>
-            <span>Agent 只会在所选目录内读写</span>
+      <section class="command-card panel" aria-labelledby="task-heading">
+        <div class="panel-head command-head">
+          <div>
+            <span class="section-kicker">COMMAND CENTER</span>
+            <h3 id="task-heading">任务控制台</h3>
           </div>
-          <div class="workspace-row">
-            <input id="workspace-input" class="path-input" type="text" spellcheck="false" placeholder="选择或输入本地项目目录">
-            <button id="browse-workspace" type="button" class="secondary compact">浏览目录</button>
-            <button id="apply-workspace" type="button" class="secondary compact">切换工作区</button>
-          </div>
+          <span class="privacy-pill">● 本地执行</span>
         </div>
 
-        <label for="task">任务描述</label>
-        <textarea id="task" rows="6" placeholder="例如：当前订单金额计算存在 Bug。请先运行测试，自行定位根因，最小修改后确保全部测试通过。"></textarea>
+        <div class="workspace-block">
+          <div class="field-heading">
+            <label for="workspace-input">工作区</label>
+            <span>Sandbox 边界</span>
+          </div>
+          <div class="workspace-row">
+            <input id="workspace-input" class="field-input path-input" type="text" spellcheck="false" placeholder="选择或输入本地项目目录">
+            <button id="browse-workspace" type="button" class="button secondary compact">浏览</button>
+            <button id="apply-workspace" type="button" class="button secondary compact">切换</button>
+          </div>
+          <p id="workspace" class="workspace-current">当前工作区：加载中...</p>
+        </div>
+
+        <div class="task-field">
+          <div class="field-heading">
+            <label for="task">任务描述</label>
+            <span>Natural Language</span>
+          </div>
+          <textarea id="task" rows="7" placeholder="例如：当前订单金额计算存在 Bug。请先运行测试，自行定位根因，最小修改后确保全部测试通过。"></textarea>
+        </div>
+
         <div class="examples" aria-label="示例任务">
           <button type="button" class="example" data-prompt="请先运行 pytest -q，定位当前失败测试对应的根因并修复；不要修改或弱化已有测试，最后确保全部测试通过。">修复失败测试</button>
           <button type="button" class="example" data-prompt="请分析当前 Python 项目结构，找到核心业务模块，并为缺少测试的关键函数补充合理的 pytest 单元测试，最后运行 pytest -q 验证。">补充单元测试</button>
           <button type="button" class="example" data-prompt="请检查当前项目中重复或明显不合理的实现，在保持公开接口兼容的前提下做一次小范围重构，并运行现有测试确认没有回归。">小范围重构</button>
         </div>
-        <div class="actions">
-          <button id="run" class="primary">▶ 运行 Agent</button>
-          <button id="reset" class="secondary">重置会话</button>
-          <span class="shortcut">Ctrl / ⌘ + Enter 运行</span>
+
+        <div class="command-actions">
+          <button id="run" class="button primary">
+            <span class="run-glyph">▶</span><span id="run-label">运行 Agent</span>
+          </button>
+          <button id="reset" class="button ghost">重置会话</button>
+          <span class="shortcut"><kbd>Ctrl</kbd> / <kbd>⌘</kbd> + <kbd>Enter</kbd></span>
         </div>
         <p id="message" class="message" role="status"></p>
-      </div>
+      </section>
     </section>
 
-    <section class="dashboard">
-      <section class="timeline-card card">
-        <div class="section-title">
+    <section class="workspace-dashboard">
+      <section class="panel timeline-panel">
+        <div class="panel-head">
           <div>
-            <span class="eyebrow">实时轨迹 · LIVE TRACE</span>
-            <h2>Agent 执行时间线</h2>
+            <span class="section-kicker">LIVE EXECUTION TRACE</span>
+            <h3>Agent 执行时间线</h3>
           </div>
-          <span id="step-label" class="chip">步骤 -</span>
+          <div class="panel-actions">
+            <span class="live-indicator"><i></i> LIVE</span>
+            <span id="step-label" class="chip simple">步骤 -</span>
+          </div>
         </div>
         <div id="timeline" class="timeline">
           <div class="empty-state">
-            <div class="empty-icon">⌁</div>
-            <p>提交任务后，这里会实时出现模型决策、工具调用、文件修改、自动验证和回滚事件。</p>
+            <div class="empty-orbit"><span>⌁</span></div>
+            <strong>等待任务</strong>
+            <p>模型决策、工具调用、文件修改、自动验证与回滚事件会实时显示在这里。</p>
           </div>
         </div>
       </section>
 
-      <aside class="side-stack">
-        <section class="card final-card">
-          <div class="section-title">
+      <aside class="side-column">
+        <section class="panel result-panel">
+          <div class="panel-head">
             <div>
-              <span class="eyebrow">任务结果 · RESULT</span>
-              <h2>最终结果</h2>
+              <span class="section-kicker">RUN SUMMARY</span>
+              <h3>最终结果</h3>
             </div>
-            <span id="result-badge" class="result-badge neutral">等待中</span>
+            <span id="result-badge" class="result-badge neutral"><i></i>等待中</span>
           </div>
+
           <div class="metrics">
-            <div><span>执行步数</span><strong id="metric-steps">-</strong></div>
-            <div><span>验证结果</span><strong id="metric-verify">-</strong></div>
-            <div><span>修改文件</span><strong id="metric-changes">0</strong></div>
+            <div class="metric"><span>执行步数</span><strong id="metric-steps">-</strong><small>STEPS</small></div>
+            <div class="metric"><span>验证结果</span><strong id="metric-verify">-</strong><small>VERIFY</small></div>
+            <div class="metric"><span>修改文件</span><strong id="metric-changes">0</strong><small>FILES</small></div>
+            <div class="metric"><span>运行耗时</span><strong id="metric-duration">-</strong><small>ELAPSED</small></div>
           </div>
-          <pre id="final-answer" class="answer-box">任务完成后，Agent 的最终总结会显示在这里。</pre>
+
+          <div class="answer-wrap">
+            <div class="answer-title"><span>Agent Summary</span><span class="mono-dot">•••</span></div>
+            <pre id="final-answer" class="answer-box">任务完成后，Agent 的最终总结会显示在这里。</pre>
+          </div>
         </section>
 
-        <section class="card changes-card">
-          <div class="section-title">
+        <section class="panel changes-panel">
+          <div class="panel-head">
             <div>
-              <span class="eyebrow">代码变化 · CODE CHANGES</span>
-              <h2>文件修改</h2>
+              <span class="section-kicker">CODE CHANGES</span>
+              <h3>文件修改</h3>
             </div>
-            <span id="change-count" class="chip">0 个文件</span>
+            <div class="panel-actions">
+              <button
+                id="restore-run"
+                type="button"
+                class="button restore compact"
+                title="恢复到本次任务开始前的 Git Checkpoint"
+                disabled
+              >↩ 恢复本次修改</button>
+              <span id="change-count" class="chip simple">0 个文件</span>
+            </div>
           </div>
           <div id="changes" class="changes-list">
             <p class="empty-inline">暂无文件修改。</p>
@@ -121,64 +166,65 @@
       </aside>
     </section>
 
-    <section class="card detail-card">
-      <div class="section-title">
+    <section class="panel inspector-panel">
+      <div class="panel-head">
         <div>
-          <span class="eyebrow">事件检查器 · INSPECTOR</span>
-          <h2>事件详情</h2>
+          <span class="section-kicker">EVENT INSPECTOR</span>
+          <h3>事件详情</h3>
         </div>
-        <span id="detail-seq" class="chip">#-</span>
+        <span id="detail-seq" class="chip simple">#-</span>
       </div>
-      <div class="detail-grid">
-        <div class="detail-meta">
-          <dl>
-            <dt>事件</dt><dd id="detail-type">-</dd>
-            <dt>工具</dt><dd id="detail-tool">-</dd>
-            <dt>耗时</dt><dd id="detail-duration">-</dd>
-            <dt>步骤</dt><dd id="detail-step">-</dd>
-          </dl>
-        </div>
-        <div>
-          <h3>输出 / 错误</h3>
+
+      <div class="inspector-meta">
+        <div><span>事件</span><strong id="detail-type">-</strong></div>
+        <div><span>工具</span><strong id="detail-tool">-</strong></div>
+        <div><span>耗时</span><strong id="detail-duration">-</strong></div>
+        <div><span>步骤</span><strong id="detail-step">-</strong></div>
+      </div>
+
+      <div class="inspector-grid">
+        <div class="code-pane">
+          <div class="code-pane-head"><span>OUTPUT / ERROR</span><span>TRACE</span></div>
           <pre id="detail-output">点击时间线中的事件查看完整内容。</pre>
         </div>
-        <div>
-          <h3>代码差异</h3>
+        <div class="code-pane">
+          <div class="code-pane-head"><span>CODE DIFF</span><span>UNIFIED</span></div>
           <pre id="detail-diff" class="diff-box">暂无代码差异。</pre>
         </div>
       </div>
     </section>
   </main>
 
-  <footer>
-    <span>TraceForge 本地 Web 控制台</span>
-    <span>API Key 仅保存在 Python 后端环境变量中，不会发送到浏览器。</span>
+  <footer class="footer">
+    <span><strong>TraceForge</strong> · Local Coding Agent Runtime</span>
+    <span>API Key 仅存在 Python 后端环境，不会发送到浏览器。</span>
   </footer>
 
   <div id="workspace-modal" class="modal" hidden>
     <div id="workspace-backdrop" class="modal-backdrop"></div>
     <section class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="workspace-modal-title">
-      <div class="modal-head">
+      <div class="panel-head modal-head">
         <div>
-          <span class="eyebrow">本地目录浏览器</span>
-          <h2 id="workspace-modal-title">选择 Agent 工作区</h2>
+          <span class="section-kicker">LOCAL DIRECTORY BROWSER</span>
+          <h3 id="workspace-modal-title">选择 Agent 工作区</h3>
         </div>
         <button id="close-workspace" type="button" class="icon-button" aria-label="关闭">×</button>
       </div>
+
       <div class="browser-address">
-        <input id="browser-path" class="path-input" type="text" spellcheck="false" placeholder="输入目录路径">
-        <button id="browser-go" type="button" class="secondary compact">前往</button>
+        <input id="browser-path" class="field-input path-input" type="text" spellcheck="false" placeholder="输入目录路径">
+        <button id="browser-go" type="button" class="button secondary compact">前往</button>
       </div>
       <div id="browser-roots" class="root-row"></div>
       <div class="browser-toolbar">
-        <button id="browser-parent" type="button" class="secondary compact">← 上一级</button>
-        <span id="browser-hint">双击文件夹进入，选择当前目录即可作为 Workspace。</span>
+        <button id="browser-parent" type="button" class="button ghost compact">← 上一级</button>
+        <span id="browser-hint">单击选择，双击进入；也可以直接输入路径。</span>
       </div>
       <div id="folder-list" class="folder-list"></div>
       <p id="browser-message" class="message"></p>
       <div class="modal-actions">
-        <button id="select-workspace" type="button" class="primary">选择当前目录</button>
-        <button id="cancel-workspace" type="button" class="secondary">取消</button>
+        <button id="select-workspace" type="button" class="button primary">选择当前目录</button>
+        <button id="cancel-workspace" type="button" class="button ghost">取消</button>
       </div>
     </section>
   </div>

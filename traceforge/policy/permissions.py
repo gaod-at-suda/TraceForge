@@ -2,7 +2,7 @@
 
 PLAN 模式只允许只读工具；
 AUTO 模式允许正常执行；
-CONFIRM 模式保留工具可见性，但会拦截写操作，便于未来接 Web 审批按钮。
+CONFIRM 模式保留工具可见性，但在没有显式宿主批准时拒绝具有副作用的操作。
 """
 
 from __future__ import annotations
@@ -37,13 +37,13 @@ class ToolPermissionPolicy:
         self.mode = mode
 
     def visible(self, tool_name: str) -> bool:
-        """PLAN 模式直接隐藏有副作用工具。"""
+        """在 PLAN 模式下仅向模型暴露无副作用工具。"""
         if self.mode == AgentMode.PLAN:
             return tool_name in self.READ_ONLY
         return True
 
     def check(self, tool_name: str) -> PermissionDecision:
-        """真正执行前再做一次权限校验。"""
+        """在工具实际执行前再次进行宿主侧权限校验。"""
         if self.mode == AgentMode.AUTO:
             return PermissionDecision(True, "AUTO 模式允许执行")
 
@@ -55,5 +55,5 @@ class ToolPermissionPolicy:
 
         return PermissionDecision(
             False,
-            "CONFIRM 模式下该操作需要用户审批；当前自动测试不会自动批准",
+            "CONFIRM 模式下该操作需要显式宿主批准；当前未提供批准信号",
         )

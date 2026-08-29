@@ -10,6 +10,7 @@ import sys
 
 from traceforge.bootstrap import build_runtime
 from traceforge.config.constants import DEFAULT_WEB_HOST, DEFAULT_WEB_PORT
+from traceforge.config.env_loader import load_env_file
 from traceforge.ui.console import ConsoleUI
 from traceforge.web import run_web_console
 
@@ -26,6 +27,8 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> int:
+    """加载本地配置后启动 CLI、单次任务或 Web Console。"""
+    load_env_file()
     args = parse_args()
     ui = ConsoleUI()
 

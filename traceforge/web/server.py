@@ -1,6 +1,6 @@
 """基于 Python 标准库的本地 Web Console Server。
 
-不引入 Flask/FastAPI 等额外 Web 框架，减少项目依赖和答辩解释成本。
+不引入 Flask/FastAPI 等额外 Web 框架，使用 Python 标准库提供轻量级本地服务，减少运行依赖。
 """
 
 from __future__ import annotations
@@ -30,7 +30,12 @@ class WebRuntimeContext:
     def __init__(self, runtime: RuntimeBundle) -> None:
         self._lock = RLock()
         self._runtime = runtime
-        self._state = WebState(runtime.agent, runtime.event_store)
+        self._state = WebState(
+            runtime.agent,
+            runtime.event_store,
+            runtime.checkpoint_manager,
+            runtime.event_bus,
+        )
 
     def status(self) -> dict:
         with self._lock:
@@ -56,6 +61,11 @@ class WebRuntimeContext:
         with self._lock:
             return self._state.reset_session()
 
+    def restore_last_run(self) -> tuple[bool, str]:
+        """恢复最近一次成功任务产生的修改。"""
+        with self._lock:
+            return self._state.restore_last_run()
+
     def switch_workspace(self, path_text: str) -> tuple[bool, str]:
         """切换到用户明确选择的本地目录。运行中禁止切换。"""
         with self._lock:
@@ -76,7 +86,12 @@ class WebRuntimeContext:
                 return False, f"工作区初始化失败：{exc}"
 
             self._runtime = runtime
-            self._state = WebState(runtime.agent, runtime.event_store)
+            self._state = WebState(
+                runtime.agent,
+                runtime.event_store,
+                runtime.checkpoint_manager,
+                runtime.event_bus,
+            )
             return True, str(target)
 
     def current_workspace(self) -> Path:
@@ -135,6 +150,14 @@ class ConsoleHandler(BaseHTTPRequestHandler):
             if not self.context.reset_session():
                 return self._json({"ok": False, "error": "运行中无法重置"}, 409)
             return self._json({"ok": True})
+
+        if parsed.path == "/api/restore":
+            ok, message = self.context.restore_last_run()
+            if not ok:
+                return self._json({"ok": False, "error": message}, 409)
+            payload = self.context.status()
+            payload.update({"ok": True, "message": message})
+            return self._json(payload)
 
         if parsed.path == "/api/workspace":
             data = self._read_json()
@@ -218,7 +241,7 @@ class ConsoleHandler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def log_message(self, format: str, *args) -> None:
-        # 避免轮询 API 每次请求都刷屏，Agent 事件本身已经有 CLI Trace。
+        # 状态轮询属于高频请求，不输出访问日志；关键 Agent 事件由事件系统单独记录。
         return
 
 
